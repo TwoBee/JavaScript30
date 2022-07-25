@@ -37,29 +37,126 @@
     
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    // const fifhun = inventors.filter(inventor => {
+    //   if(inventor.year >= 1500 && inventor.year < 1600){
+    //     return true;
+    //   }
+    // });
+    const fifhun = inventors.filter(inventor => (inventor.year >= 1500 && inventor.year < 1600));
+    console.table(fifhun);
+    ///////////
+    //Antwort//
+    ///////////
+    // Wenn man hier "True" zurückgibt, wird das entsprechende Item zurückgegeben
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors first and last names
+    const names = inventors.map(inventor => `${inventor.first} ${inventor.last}`);
+    console.table(names);
+    ///////////
+    //Antwort//
+    ///////////
+    // Gibt immer die selbe Menge an Items zurück, reduziert nur horizontal
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    // Erste Möglichkeit
+    // const sortedInv = inventors.sort(function(a,b){
+    //   if(a.year > b.year){
+    //     return 1;
+    //   }
+    //   return -1;
+    // })
+
+    //Zweite Möglichkeit
+    const sortedInv = inventors.sort((a,b) => a.year > b.year ? 1 : -1)
+
+    console.table(sortedInv);
+    ///////////
+    //Antwort//
+    ///////////
+    // eine Art Bubble-Sort. Mit Indizes a und b zur Sortierung
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live all together?
 
+    const reduced = inventors.reduce((total, inventors) => {
+      return total  + inventors.year;
+    }, 0)
+
+    console.table(reduced);
+
+     ///////////
+    //Antwort//
+    ///////////
+    // Reduce nimmt die erste Variable als Summe; das zweite Argument ist das Objekt über das iteriert werden soll
+    // Die 0 ist der Startwert der Reduce-Funktion
+
     // 5. Sort the inventors by years lived
+
+    // const sortedReduced = inventors.sort((a,b) =>{
+    //   const last = a.passed - a.year;
+    //   const next = b.passed - b.year;
+    //   if(last > next){
+    //     return -1
+    //   }
+    //   return 1;
+    // })
+
+    const sortedReduced = inventors.sort((a,b) => (a.passed - a.year) > (b.passed - b.year) ? -1 : 1);
+
+    console.table(sortedReduced);
+     ///////////
+    //Antwort//
+    ///////////
+    // erstes Beispiel ist die longhand während das 2. Beispiel die Shorthand ist.
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
 
+    // const categories = document.querySelector('.mw-category');
+    // const links = [...categories.querySelectorAll('a')];
+    // const de = links
+    //                 .map(link => link.textContent)
+    //                 .filter(streetname => streetname.includes('de'));
+
+    // console.table(de);
+
+     ///////////
+    //Antwort//
+    ///////////
+    //wird auf der Wiki-Seite selber ausgeführt (logischerweise)
+    //wichtig hier: die aneinanderkettung der Funktionen
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+
+    const alphasort = people.sort((last, next) => {
+      const [llastname, lfirstname] = last.split(', ');
+      const [nlastname, nfirstname] = next.split(', ');
+      return llastname > nlastname ? 1 : -1;
+    })
+
+     ///////////
+    //Antwort//
+    ///////////
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
 
+    const transpose = data.reduce(function(obj, item){
+      if(!obj[item]){
+        obj[item] = 0;
+      }
+      obj[item]++;
+      return obj;
+    }, {})
+
+    console.log(transpose);
+     ///////////
+    //Antwort//
+    ///////////
   </script>
 </body>
 </html>
