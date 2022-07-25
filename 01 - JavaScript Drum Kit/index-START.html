@@ -58,6 +58,53 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+   
+  //////////////
+  // Functions//
+  //////////////
+  function removePlaying(e){
+    if(e.propertyName !== 'transform') return; //wenns kein transform ist, mach nichts
+
+    this.classList.remove('playing');
+  }
+
+  //spielerei um die audio durchballern zu können
+  //ausgelagert weil ... üben
+  function rewind(audio){
+    audio.currentTime = 0;
+  }
+
+//macht krach
+  function playSound(e){
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const keyVisual = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    if(!audio) return; //wenn nichts selektiert wurde, mach auch nix
+    keyVisual.classList.add('playing');
+    rewind(audio);
+    audio.play();
+    //Erste Möglichkeit
+    //ABER Timeout könnte asynchron werden, wenn im CSS geschraubt wird
+    // setTimeout(() => {
+    //   keyVisual.classList.remove('playing');
+    // }, 70);
+  }
+  
+  ////////////////////
+  // Event Listeners//
+  ////////////////////
+
+  
+  window.addEventListener('keydown', playSound);
+  //macht animations-zeug
+  const keys = document.querySelectorAll('.key');
+
+  //erste möglichkeit: ist kacke, läuft aber. Schmeißt unendlich viele Fehler, also unsauber
+  keys.forEach(key => key.addEventListener('transitionend', function(e){
+    this.classList.remove('playing');
+  }))
+  
+  //zweite möglichkeit
+    //keys.forEach(key => key.addEventListener('transitionend', removePlaying));
 
 </script>
 
