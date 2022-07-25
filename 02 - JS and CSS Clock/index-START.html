@@ -37,14 +37,14 @@
     .clock {
       width: 30rem;
       height: 30rem;
-      border: 20px solid white;
+      border: 20px solid #23a094;
       border-radius: 50%;
       margin: 50px auto;
       position: relative;
       padding: 2rem;
       box-shadow:
         0 0 0 4px rgba(0,0,0,0.1),
-        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 0 3px #23a094,
         inset 0 0 10px black,
         0 0 10px rgba(0,0,0,0.2);
     }
@@ -62,13 +62,50 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform: rotate(90deg);
+      transform-origin: 100%;
+      transition: all 0.5s cubic-bezier(0.1, 2.7, 0.58, 1);
+    }
+
+    .hour-hand{
+      width: 35%;
+      transform-origin: 120%;
+    }
+
+    .second-hand{
+      background: #ff90e8;
+    }
+    .min-hand {
+      width: 45%;
+      transform-origin: 108% center 0px;
+      top: 54%;
     }
 
   </style>
 
   <script>
+    const sekundenZeiger = document.querySelector('.second-hand');
+    const minutenZeiger = document.querySelector('.min-hand');
+    const stundenZeiger = document.querySelector('.hour-hand');
+
+    function setDate(){
+      const now = new Date();
+      const sekunden = now.getSeconds();
+      const minuten = now.getMinutes();
+      const stunden = now.getHours();
+
+      const sekundenGrad = ((sekunden / 60) * 360) + 90; //sekunden harmonisieren und mit basis multiplizieren
+      const minutenGrad = ((minuten / 60) * 360) + 90; //sekunden harmonisieren und mit basis multiplizieren
+      const stundenGrad = ((stunden / 12) * 360) + 90; //sekunden harmonisieren und mit basis multiplizieren
+
+      sekundenZeiger.style.transform = `rotate(${sekundenGrad}deg)`;
+      minutenZeiger.style.transform = `rotate(${minutenGrad}deg)`;
+      stundenZeiger.style.transform = `rotate(${stundenGrad}deg)`;
 
 
+    }
+
+    setInterval(setDate, 1000);
   </script>
 </body>
 </html>
