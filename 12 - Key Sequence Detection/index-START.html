@@ -4,9 +4,38 @@
   <meta charset="UTF-8">
   <title>Key Detection</title>
   <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 <script>
+
+  const secret = "tobi";
+  const input = [];
+
+  window.addEventListener("keyup", (e) => {
+    input.push(e.key);
+    input.splice(-secret.length - 1, input.length - secret.length);
+
+    if(input.join("").includes(secret)){
+      document.querySelectorAll("*").forEach(element => element.addEventListener("click", party));
+      cornify_add();
+    }
+  });
+
+  function randomInRange(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+function party(){
+  console.log(("hi"));
+  return confetti({
+  angle: randomInRange(55, 125),
+  spread: randomInRange(50, 70),
+  particleCount: randomInRange(50, 100),
+  origin: { y: 0.6 }
+});
+}
+
 </script>
 </body>
 </html>
