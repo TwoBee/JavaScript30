@@ -23,12 +23,77 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+      <button id="reset">Reset</button>
+      <button id="checkAll">Check All</button>
+      <button id="uncheckAll">Uncheck All</button>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+  const btnReset = document.querySelector('#reset');
+  const btnCheckAll = document.querySelector('#checkAll');
+  const btnUncheckAll = document.querySelector('#uncheckAll');
+
+  addItems.addEventListener("submit", addItem);
+  itemsList.addEventListener("click", toggleDone);
+  btnReset.addEventListener("click", reset);
+  btnCheckAll.addEventListener("click", checkAll);
+  btnUncheckAll.addEventListener("click", uncheckAll);
+
+  function reset(){
+    localStorage.clear();
+    populateList(items, itemsList);
+  }
+
+  function checkAll(){
+    items.map(item => item.state=true);
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+  function uncheckAll(){
+    items.map(item => item.state=false);
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
+  function addItem(e){
+    e.preventDefault();
+    const text = (this.querySelector('[name="item"]')).value;
+    const item = {
+      text,
+      state: false
+    }
+    items.push(item);
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
+    this.reset();
+  }
+
+  function populateList(items = [], itemsList){
+    itemsList.innerHTML = items.map((item, i) =>{
+      return `
+      <li>
+        <input type="checkbox" data-index=${i} id="item${i}" ${item.state ? 'checked': ''} />
+        <label for="item${i}">${item.text}</label>  
+      </li>
+      `;
+    }).join('');
+  }
+
+  function toggleDone(e){
+    if(!e.target.matches('input')) return;
+
+    const element = e.target;
+    const index = element.dataset.index;
+
+    items[index].state = !items[index].state;
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
+  populateList(items, itemsList);
 
 </script>
 
