@@ -44,6 +44,11 @@
 
   function reset(){
     localStorage.clear();
+    const index = items.length;
+    for (let i = 0; i < index; i++) {
+      console.log(i);
+      items.pop();
+    }
     populateList(items, itemsList);
   }
 
